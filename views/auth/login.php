@@ -23,6 +23,12 @@ require __DIR__ . '/../layouts/header.php';
             </div>
         <?php endif; ?>
 
+        <?php if (($_GET['msg'] ?? '') === 'password_reset'): ?>
+            <div class="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 text-xs font-semibold flex items-center gap-2 border border-emerald-200 dark:border-emerald-900/50">
+                <i class="fa-solid fa-circle-check"></i> Your password has been successfully updated! You can now sign in with your new password.
+            </div>
+        <?php endif; ?>
+
         <form class="mt-8 space-y-5" action="?route=login.post" method="POST">
             <?= Csrf::getField() ?>
 
@@ -39,9 +45,14 @@ require __DIR__ . '/../layouts/header.php';
             </div>
 
             <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1">
-                    Password
-                </label>
+                <div class="flex items-center justify-between mb-1">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300">
+                        Password
+                    </label>
+                    <a href="?route=forgot-password" class="text-xs font-medium text-brand-600 dark:text-brand-400 hover:underline">
+                        Forgot password?
+                    </a>
+                </div>
                 <div class="relative">
                     <i class="fa-solid fa-key absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
                     <input type="password" name="password" required autocomplete="current-password"

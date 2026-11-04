@@ -51,4 +51,73 @@ class User {
 
         return (int)$db->lastInsertId();
     }
+
+    public static function updatePassword(int $userId, string $newPassword): bool {
+        $db = Database::getConnection();
+        if (!$db) return false;
+
+        $hash = password_hash($newPassword, PASSWORD_BCRYPT);
+        $stmt = $db->prepare("UPDATE users SET password = :password, updated_at = CURRENT_TIMESTAMP WHERE id = :id");
+        return $stmt->execute([
+            'password' => $hash,
+            'id'       => $userId
+        ]);
+    }
+
+    public static function createPasswordReset(string $email): string {
+        $db = Database::getConnection();
+        if (!$db) throw new \Exception("Database not available.");
+
+        // Ensure password_resets table exists
+        $db->exec("CREATE TABLE IF NOT EXISTS password_resets (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT NOT NULL,
+            token TEXT NOT NULL,
+            expires_at DATETIME NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )");
+
+        $token = bin2hex(random_bytes(32));
+        $expiresAt = date('Y-m-d H:i:s', time() + 900); // 15 minutes validity
+
+        // Invalidate older tokens for this email
+        $del = $db->prepare("DELETE FROM password_resets WHERE email = :email");
+        $del->execute(['email' => $email]);
+
+        $stmt = $db->prepare("INSERT INTO password_resets (email, token, expires_at) VALUES (:email, :token, :expires_at)");
+        $stmt->execute([
+            'email'      => $email,
+            'token'      => $token,
+            'expires_at' => $expiresAt
+        ]);
+
+        return $token;
+    }
+
+    public static function verifyPasswordResetToken(string $token): ?array {
+        $db = Database::getConnection();
+        if (!$db) return null;
+
+        // Ensure table exists
+        $db->exec("CREATE TABLE IF NOT EXISTS password_resets (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT NOT NULL,
+            token TEXT NOT NULL,
+            expires_at DATETIME NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )");
+
+        $stmt = $db->prepare("SELECT * FROM password_resets WHERE token = :token AND expires_at > CURRENT_TIMESTAMP ORDER BY id DESC LIMIT 1");
+        $stmt->execute(['token' => $token]);
+        $row = $stmt->fetch();
+        return $row ?: null;
+    }
+
+    public static function deletePasswordReset(string $token): void {
+        $db = Database::getConnection();
+        if (!$db) return;
+
+        $stmt = $db->prepare("DELETE FROM password_resets WHERE token = :token");
+        $stmt->execute(['token' => $token]);
+    }
 }

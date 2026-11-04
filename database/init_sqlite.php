@@ -63,6 +63,15 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS comments (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 )");
 
+// 5. Password Resets Table
+$pdo->exec("CREATE TABLE IF NOT EXISTS password_resets (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT NOT NULL,
+    token TEXT NOT NULL,
+    expires_at DATETIME NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+)");
+
 // Seed default users if empty
 $userCount = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
 if ($userCount == 0) {

@@ -119,6 +119,30 @@ switch ($route) {
         (new AuthController())->logout();
         break;
 
+    case 'forgot-password':
+        (new AuthController())->showForgotPassword();
+        break;
+
+    case 'forgot-password.post':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            (new AuthController())->sendResetLink();
+        } else {
+            header('Location: ?route=forgot-password');
+        }
+        break;
+
+    case 'reset-password':
+        (new AuthController())->showResetPassword();
+        break;
+
+    case 'reset-password.post':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            (new AuthController())->resetPassword();
+        } else {
+            header('Location: ?route=forgot-password');
+        }
+        break;
+
     // AI API Endpoints (JSON)
     case 'api.ai.summarize':
         (new AIController())->summarize();

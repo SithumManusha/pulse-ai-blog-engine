@@ -108,6 +108,25 @@ test('AI Service Resilience & Fallback', function() {
     if (!isset($summary['success'])) throw new Exception("AI response malformed");
 });
 
+// TEST 9: Password Reset Token Security & Password Update
+test('Password Reset Token Lifecycle & Update', function() {
+    $email = 'admin@aurablog.com';
+    $token = User::createPasswordReset($email);
+    if (empty($token) || strlen($token) !== 64) throw new Exception("Token was not properly generated");
+
+    $record = User::verifyPasswordResetToken($token);
+    if (!$record || $record['email'] !== $email) throw new Exception("Token verification failed");
+
+    // Test updating password with secure bcrypt
+    $updated = User::updatePassword(1, 'admin123');
+    if (!$updated) throw new Exception("Password update query failed");
+
+    // Invalidate token
+    User::deletePasswordReset($token);
+    $checkAfter = User::verifyPasswordResetToken($token);
+    if ($checkAfter !== null) throw new Exception("Token was not invalidated after use");
+});
+
 // Cleanup test post
 if ($testPostId) {
     Post::delete($testPostId, 1, true);
@@ -127,5 +146,5 @@ foreach ($results as $r) {
     }
 }
 echo "============================================================\n";
-echo $allPass ? "ALL 8 SYSTEM QA TESTS PASSED WITH 100% SUCCESS!\n" : "SOME TESTS FAILED!\n";
+echo $allPass ? "ALL 9 SYSTEM QA TESTS PASSED WITH 100% SUCCESS!\n" : "SOME TESTS FAILED!\n";
 echo "============================================================\n";

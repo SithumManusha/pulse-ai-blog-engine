@@ -33,6 +33,7 @@
   * Automated CSRF Token generation & verification on all forms.
   * Markdown to HTML sanitization preventing Stored XSS attacks.
   * Passwords hashed using bcrypt via `password_hash()`.
+  * Secure Password Reset flow with 15-minute expiring cryptographic tokens.
   * `.env` file security blocking direct browser downloads.
 * 🎨 **Modern Minimalist UI/UX**:
   * Dark / Light mode with localStorage persistence.
@@ -193,7 +194,7 @@ The repository includes a comprehensive, automated integration test suite coveri
 php qa_audit.php
 ```
 
-All 8 system verification modules execute with a **100% Pass Rate**.
+All 9 system verification modules execute with a **100% Pass Rate**.
 
 ---
 
