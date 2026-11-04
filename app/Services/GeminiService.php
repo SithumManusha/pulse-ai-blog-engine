@@ -10,12 +10,10 @@ use App\Helpers\Env;
 class GeminiService {
     private string $apiKey;
     private string $model;
-    private string $endpoint;
 
     public function __construct() {
-        $this->apiKey   = Env::get('GEMINI_API_KEY', '');
-        $this->model    = Env::get('GEMINI_MODEL', 'gemini-1.5-flash');
-        $this->endpoint = "https://generativelanguage.googleapis.com/v1beta/models/{$this->model}:generateContent?key={$this->apiKey}";
+        $this->apiKey = Env::get('GEMINI_API_KEY', '');
+        $this->model  = Env::get('GEMINI_MODEL', 'gemini-3.5-flash');
     }
 
     public function isConfigured(): bool {
@@ -23,15 +21,17 @@ class GeminiService {
     }
 
     /**
-     * Send raw prompt to Gemini API
+     * Send raw prompt to Gemini API with automated resilient fallback
      */
     public function generate(string $prompt, float $temperature = 0.7): array {
         if (!$this->isConfigured()) {
             return [
                 'success' => false,
-                'error'   => 'Gemini API key is not configured. Please add GEMINI_API_KEY to your .env file.'
+                'error'   => 'Gemini API key is not configured. Please add GEMINI_API_KEY to your environment.'
             ];
         }
+
+        $models = array_unique([$this->model, 'gemini-3.5-flash', 'gemini-2.5-flash-lite', 'gemini-flash-latest']);
 
         $payload = [
             'contents' => [
@@ -47,38 +47,45 @@ class GeminiService {
             ]
         ];
 
-        $ch = curl_init($this->endpoint);
-        curl_setopt_array($ch, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST           => true,
-            CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
-            CURLOPT_POSTFIELDS     => json_encode($payload),
-            CURLOPT_TIMEOUT        => 30,
-            CURLOPT_SSL_VERIFYPEER => true
-        ]);
+        $lastError = 'Service temporarily unavailable';
 
-        $response = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $curlError = curl_error($ch);
-        curl_close($ch);
+        foreach ($models as $candidateModel) {
+            $endpoint = "https://generativelanguage.googleapis.com/v1beta/models/{$candidateModel}:generateContent?key=" . urlencode($this->apiKey);
 
-        if ($curlError) {
-            return ['success' => false, 'error' => "Network error: {$curlError}"];
+            $ch = curl_init($endpoint);
+            curl_setopt_array($ch, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_POST           => true,
+                CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
+                CURLOPT_POSTFIELDS     => json_encode($payload),
+                CURLOPT_TIMEOUT        => 20,
+                CURLOPT_SSL_VERIFYPEER => true
+            ]);
+
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $curlError = curl_error($ch);
+            curl_close($ch);
+
+            if ($curlError) {
+                $lastError = "Network error: {$curlError}";
+                continue;
+            }
+
+            $data = json_decode($response, true);
+
+            if ($httpCode === 200 && !empty($data['candidates'][0]['content']['parts'][0]['text'])) {
+                $text = trim($data['candidates'][0]['content']['parts'][0]['text']);
+                return [
+                    'success' => true,
+                    'text'    => $text
+                ];
+            }
+
+            $lastError = $data['error']['message'] ?? "API error (HTTP {$httpCode})";
         }
 
-        $data = json_decode($response, true);
-
-        if ($httpCode >= 400 || isset($data['error'])) {
-            $msg = $data['error']['message'] ?? "API error (HTTP {$httpCode})";
-            return ['success' => false, 'error' => $msg];
-        }
-
-        $text = $data['candidates'][0]['content']['parts'][0]['text'] ?? null;
-        if (!$text) {
-            return ['success' => false, 'error' => 'No content returned from AI model.'];
-        }
-
-        return ['success' => true, 'text' => trim($text)];
+        return ['success' => false, 'error' => $lastError];
     }
 
     /**
