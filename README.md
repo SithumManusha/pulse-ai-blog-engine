@@ -1,15 +1,21 @@
 # ⚡ Pulse AI Blog Engine
 
-> Next-Generation AI-Powered Blog & Content Publishing Platform built with Modern PHP, MySQL, Tailwind CSS, and Google Gemini AI.
+> Next-Generation AI-Powered Blog & Content Publishing Platform built with Modern PHP, MySQL/SQLite, Tailwind CSS, and Google Gemini AI.
 
-![PHP](https://img.shields.io/badge/PHP-8.0%2B-777BB4?style=for-the-badge&logo=php&logoColor=white)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Azure_Cloud-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)](https://pulse-ai-blog-engine-enh6hzeebedkgpag.eastasia-01.azurewebsites.net)
+[![Container Registry](https://img.shields.io/badge/GHCR.io-Docker_Image-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://github.com/SithumManusha/pulse-ai-blog-engine/pkgs/container/pulse-ai-blog-engine)
+![PHP](https://img.shields.io/badge/PHP-8.2%2B-777BB4?style=for-the-badge&logo=php&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0%2B-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-Zero--Config-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Gemini AI](https://img.shields.io/badge/Google_Gemini-AI_1.5_Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/SithumManusha/pulse-ai-blog-engine)
 [![CI Quality Gate](https://github.com/SithumManusha/pulse-ai-blog-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/SithumManusha/pulse-ai-blog-engine/actions/workflows/ci.yml)
+[![Docker Build & Push](https://github.com/SithumManusha/pulse-ai-blog-engine/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/SithumManusha/pulse-ai-blog-engine/actions/workflows/docker-publish.yml)
 [![CodeQL Security](https://github.com/SithumManusha/pulse-ai-blog-engine/actions/workflows/codeql.yml/badge.svg)](https://github.com/SithumManusha/pulse-ai-blog-engine/actions/workflows/codeql.yml)
+
+🌐 **Live Application**: [pulse-ai-blog-engine-enh6hzeebedkgpag.eastasia-01.azurewebsites.net](https://pulse-ai-blog-engine-enh6hzeebedkgpag.eastasia-01.azurewebsites.net)
 
 ---
 
@@ -148,10 +154,23 @@ php -S localhost:8000
 ```
 Open your browser and navigate to: **`http://localhost:8000`**
 
-#### Method B: XAMPP / WampServer
-1. Copy the entire `pulse-ai-blog-engine` folder into `C:/xampp/htdocs/`.
-2. Start Apache and MySQL in the XAMPP Control Panel.
-3. Open your browser and navigate to: **`http://localhost/pulse-ai-blog-engine/`**
+#### Method C: Docker Container (Production-Ready)
+Run directly with zero local PHP/MySQL dependencies:
+```bash
+docker pull ghcr.io/sithummanusha/pulse-ai-blog-engine:latest
+docker run -d -p 8080:8080 --name pulse-ai ghcr.io/sithummanusha/pulse-ai-blog-engine:latest
+```
+Open your browser at: **`http://localhost:8080`**
+
+---
+
+## ☁️ Cloud Deployment (Microsoft Azure)
+
+Pulse AI Blog Engine is deployed as a high-availability Linux container on **Microsoft Azure App Service** powered by **GitHub Container Registry (GHCR)**:
+* **Live Production URL**: [https://pulse-ai-blog-engine-enh6hzeebedkgpag.eastasia-01.azurewebsites.net](https://pulse-ai-blog-engine-enh6hzeebedkgpag.eastasia-01.azurewebsites.net)
+* **Automated CI/CD**: Every push to `main` triggers GitHub Actions to build and push multi-architecture containers to `ghcr.io/sithummanusha/pulse-ai-blog-engine:latest`.
+* **Zero Cold Starts**: Always-on container architecture ensures instant sub-second response times globally.
+* **Dual Database Support**: Seamless zero-config SQLite persistence in containerized environments alongside full enterprise MySQL clusters.
 
 ---
 
