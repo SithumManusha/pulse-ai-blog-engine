@@ -1,0 +1,17 @@
+name: Pulse AI - 24/7 Keep-Alive & Health Ping
+
+on:
+  schedule:
+    # Ping every 10 minutes to keep Render container warm and prevent cold-start spin down
+    - cron: '*/10 * * * *'
+  workflow_dispatch: # Allows manual run anytime
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Warm up Pulse AI on Render
+        run: |
+          echo "Pinging Pulse AI Blog Engine..."
+          curl -s -f -m 15 https://pulse-ai-blog-engine.onrender.com/ > /dev/null || true
+          echo "Keep-alive ping sent successfully!"
