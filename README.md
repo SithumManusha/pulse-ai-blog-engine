@@ -154,7 +154,7 @@ php -S localhost:8000
 ```
 Open your browser and navigate to: **`http://localhost:8000`**
 
-#### Method C: Docker Container (Production-Ready)
+#### Method B: Docker Container (Production-Ready)
 Run directly with zero local PHP/MySQL dependencies:
 ```bash
 docker pull ghcr.io/sithummanusha/pulse-ai-blog-engine:latest
