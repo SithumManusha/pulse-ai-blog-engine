@@ -12,8 +12,9 @@ COPY . /var/www/html
 # Ensure database directory is writable for SQLite database operations
 RUN chmod -R 777 /var/www/html/database
 
-ENV PORT=10000
+ENV PORT=8080
+EXPOSE 8080
 EXPOSE 10000
 
-# Start PHP built-in web server binding to dynamic Render PORT serving public/
-CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-10000} -t public"]
+# Start PHP built-in web server binding to dynamic PORT (DigitalOcean 8080 / Render 10000) serving public/
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t public"]
