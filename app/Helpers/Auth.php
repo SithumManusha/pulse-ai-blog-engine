@@ -48,9 +48,11 @@ class Auth {
         $_SESSION['email']    = $user['email'];
         $_SESSION['role']     = $user['role'];
         $username = $user['username'] ?? 'User';
-        $_SESSION['avatar']   = !empty($user['avatar']) && !str_contains($user['avatar'], 'unsplash') 
-            ? $user['avatar'] 
-            : 'https://ui-avatars.com/api/?name=' . urlencode($username) . '&background=4f46e5&color=fff&bold=true';
+        $userAvatar = $user['avatar'] ?? '';
+        if (empty($userAvatar) || str_contains($userAvatar, 'unsplash') || str_contains($userAvatar, 'photo-') || str_contains($userAvatar, 'pravatar')) {
+            $userAvatar = 'https://ui-avatars.com/api/?name=' . urlencode($username) . '&background=4f46e5&color=fff&bold=true';
+        }
+        $_SESSION['avatar'] = $userAvatar;
     }
 
     public static function logout(): void {

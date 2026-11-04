@@ -112,7 +112,7 @@ $currentUser = Auth::user();
                         <!-- User Profile Dropdown Button -->
                         <div class="relative group">
                             <?php 
-                            $avatarUrl = (!empty($currentUser['avatar']) && !str_contains($currentUser['avatar'], 'unsplash')) 
+                            $avatarUrl = (!empty($currentUser['avatar']) && !str_contains($currentUser['avatar'], 'unsplash') && !str_contains($currentUser['avatar'], 'photo-') && !str_contains($currentUser['avatar'], 'pravatar')) 
                                 ? $currentUser['avatar'] 
                                 : 'https://ui-avatars.com/api/?name=' . urlencode($currentUser['username']) . '&background=4f46e5&color=fff&bold=true';
                             ?>

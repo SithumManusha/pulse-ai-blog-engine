@@ -40,11 +40,13 @@ class User {
         if (!$db) throw new \Exception("Database not available.");
 
         $hash = password_hash($password, PASSWORD_BCRYPT);
-        $stmt = $db->prepare("INSERT INTO users (username, email, password, role) VALUES (:username, :email, :password, 'author')");
+        $avatar = 'https://ui-avatars.com/api/?name=' . urlencode($username) . '&background=4f46e5&color=fff&bold=true';
+        $stmt = $db->prepare("INSERT INTO users (username, email, password, role, avatar) VALUES (:username, :email, :password, 'author', :avatar)");
         $stmt->execute([
             'username' => $username,
             'email'    => $email,
-            'password' => $hash
+            'password' => $hash,
+            'avatar'   => $avatar
         ]);
 
         return (int)$db->lastInsertId();

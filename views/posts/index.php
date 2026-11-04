@@ -133,7 +133,7 @@ require __DIR__ . '/../layouts/header.php';
                             <div class="pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
                                     <?php 
-                                    $authorAvatar = (!empty($post['author_avatar']) && !str_contains($post['author_avatar'], 'unsplash')) 
+                                    $authorAvatar = (!empty($post['author_avatar']) && !str_contains($post['author_avatar'], 'unsplash') && !str_contains($post['author_avatar'], 'photo-') && !str_contains($post['author_avatar'], 'pravatar')) 
                                         ? $post['author_avatar'] 
                                         : 'https://ui-avatars.com/api/?name=' . urlencode($post['author_name']) . '&background=4f46e5&color=fff&bold=true';
                                     ?>

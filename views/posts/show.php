@@ -56,7 +56,7 @@ $isAuthorOrAdmin = $currentUser && ($currentUser['id'] === $post['user_id'] || $
         <div class="flex flex-wrap items-center justify-between gap-4 py-4 border-y border-gray-100 dark:border-gray-800">
             <div class="flex items-center gap-3">
                 <?php 
-                $authorAvatar = (!empty($post['author_avatar']) && !str_contains($post['author_avatar'], 'unsplash')) 
+                $authorAvatar = (!empty($post['author_avatar']) && !str_contains($post['author_avatar'], 'unsplash') && !str_contains($post['author_avatar'], 'photo-') && !str_contains($post['author_avatar'], 'pravatar')) 
                     ? $post['author_avatar'] 
                     : 'https://ui-avatars.com/api/?name=' . urlencode($post['author_name']) . '&background=4f46e5&color=fff&bold=true';
                 ?>
@@ -212,7 +212,7 @@ $isAuthorOrAdmin = $currentUser && ($currentUser['id'] === $post['user_id'] || $
                 <input type="hidden" name="post_id" value="<?= (int)$post['id'] ?>">
                 <div class="flex gap-3">
                     <?php 
-                    $currentAvatar = (!empty($currentUser['avatar']) && !str_contains($currentUser['avatar'], 'unsplash')) 
+                    $currentAvatar = (!empty($currentUser['avatar']) && !str_contains($currentUser['avatar'], 'unsplash') && !str_contains($currentUser['avatar'], 'photo-') && !str_contains($currentUser['avatar'], 'pravatar')) 
                         ? $currentUser['avatar'] 
                         : 'https://ui-avatars.com/api/?name=' . urlencode($currentUser['username']) . '&background=4f46e5&color=fff&bold=true';
                     ?>
@@ -243,7 +243,7 @@ $isAuthorOrAdmin = $currentUser && ($currentUser['id'] === $post['user_id'] || $
                 <div class="p-4 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800/80 flex items-start justify-between gap-4">
                     <div class="flex items-start gap-3">
                         <?php 
-                        $commAvatar = (!empty($comm['avatar']) && !str_contains($comm['avatar'], 'unsplash')) 
+                        $commAvatar = (!empty($comm['avatar']) && !str_contains($comm['avatar'], 'unsplash') && !str_contains($comm['avatar'], 'photo-') && !str_contains($comm['avatar'], 'pravatar')) 
                             ? $comm['avatar'] 
                             : 'https://ui-avatars.com/api/?name=' . urlencode($comm['username']) . '&background=6366f1&color=fff&bold=true';
                         ?>
