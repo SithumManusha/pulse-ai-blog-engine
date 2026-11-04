@@ -19,6 +19,13 @@ class Database {
                         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                     ]);
+
+                    // Verify posts table exists; if not, auto-seed database seamlessly
+                    $check = self::$instance->query("SELECT name FROM sqlite_master WHERE type='table' AND name='posts'")->fetch();
+                    if (!$check) {
+                        require_once __DIR__ . '/../../database/init_sqlite.php';
+                    }
+
                     return self::$instance;
                 } catch (PDOException $e) {
                     error_log("SQLite connection error: " . $e->getMessage());

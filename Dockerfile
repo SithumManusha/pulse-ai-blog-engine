@@ -9,8 +9,10 @@ WORKDIR /var/www/html
 # Copy project files
 COPY . /var/www/html
 
-# Ensure database directory is writable for SQLite database operations
-RUN chmod -R 777 /var/www/html/database
+# Ensure database directory is writable and initialize SQLite seed database
+RUN chmod -R 777 /var/www/html/database \
+    && php /var/www/html/database/init_sqlite.php \
+    && chmod 666 /var/www/html/database/blog.sqlite
 
 ENV PORT=8080
 EXPOSE 8080
