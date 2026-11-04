@@ -7,9 +7,9 @@
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Gemini AI](https://img.shields.io/badge/Google_Gemini-AI_1.5_Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/SithumManusha/blog-app-IN2120)
-[![CI Quality Gate](https://github.com/SithumManusha/blog-app-IN2120/actions/workflows/ci.yml/badge.svg)](https://github.com/SithumManusha/blog-app-IN2120/actions/workflows/ci.yml)
-[![CodeQL Security](https://github.com/SithumManusha/blog-app-IN2120/actions/workflows/codeql.yml/badge.svg)](https://github.com/SithumManusha/blog-app-IN2120/actions/workflows/codeql.yml)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/SithumManusha/pulse-ai-blog-engine)
+[![CI Quality Gate](https://github.com/SithumManusha/pulse-ai-blog-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/SithumManusha/pulse-ai-blog-engine/actions/workflows/ci.yml)
+[![CodeQL Security](https://github.com/SithumManusha/pulse-ai-blog-engine/actions/workflows/codeql.yml/badge.svg)](https://github.com/SithumManusha/pulse-ai-blog-engine/actions/workflows/codeql.yml)
 
 ---
 
@@ -75,7 +75,7 @@ flowchart TD
 ## 📂 Project Structure
 
 ```
-blog-app-IN2120/
+pulse-ai-blog-engine/
 ├── app/
 │   ├── Config/
 │   │   └── Database.php          # PDO Database Singleton
@@ -149,9 +149,9 @@ php -S localhost:8000
 Open your browser and navigate to: **`http://localhost:8000`**
 
 #### Method B: XAMPP / WampServer
-1. Copy the entire `blog-app-IN2120` folder into `C:/xampp/htdocs/`.
+1. Copy the entire `pulse-ai-blog-engine` folder into `C:/xampp/htdocs/`.
 2. Start Apache and MySQL in the XAMPP Control Panel.
-3. Open your browser and navigate to: **`http://localhost/blog-app-IN2120/`**
+3. Open your browser and navigate to: **`http://localhost/pulse-ai-blog-engine/`**
 
 ---
 
